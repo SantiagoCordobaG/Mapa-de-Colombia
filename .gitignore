@@ -1,0 +1,14 @@
+# Dependencias instaladas localmente
+node_modules/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Registros y archivos temporales
+*.log
+*.tmp
+
+# Capturas generadas durante pruebas
+/capturas/
