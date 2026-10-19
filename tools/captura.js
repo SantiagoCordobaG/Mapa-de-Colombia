@@ -266,6 +266,11 @@ async function conectar(url) {
       console.log(JSON.stringify({ estadoPellizco }, null, 2));
     }
 
+    if (modo.includes('inset')) {
+      await evaluar("document.getElementById('inset').click()");
+      await dormir(900);
+    }
+
     if (hover && !modo.includes('drag')) {
       const punto = await cdp.enviar('Runtime.evaluate', {
         expression:

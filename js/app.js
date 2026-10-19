@@ -565,17 +565,12 @@
     ficha.classList.toggle('con-datos', Boolean(departamento));
 
     if (!departamento) {
-      ficha.innerHTML =
-        '<div class="ficha-vacia">' +
-        '<div>' +
-        '<p class="ficha-eyebrow">Explora el mapa</p>' +
-        '<p class="ficha-texto">Pasa el cursor y haz clic en un departamento para ver su ficha.</p>' +
-        '</div>' +
-        '<span class="ficha-tecla">Rueda para acercar</span>' +
-        '</div>';
+      ficha.innerHTML = '';
+      ficha.hidden = true;
       return;
     }
 
+    ficha.hidden = false;
     const region = regionPorId.get(departamento.region);
     const participacion = (departamento.poblacion / totalPoblacion) * 100;
     const tipo = departamento.esDistrito ? 'Distrito Capital' : 'Departamento';

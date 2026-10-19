@@ -645,8 +645,27 @@ button { font-family: inherit; }
 
 .mapa.seleccion-insular .ficha.con-datos {
   left: auto;
-  width: min(470px, calc(100% - 300px));
+  right: 16px;
+  width: min(440px, calc(100% - 300px));
 }
+
+.mapa.seleccion-insular .ficha-datos {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.mapa.seleccion-insular .ficha-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+}
+
+.mapa.seleccion-insular .ficha-participacion {
+  max-width: none;
+  margin-top: 0;
+}
+
+.mapa.seleccion-insular .boton-volver { justify-self: start; }
 
 .inset:hover,
 .inset.activo {
@@ -745,16 +764,33 @@ button { font-family: inherit; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.ficha-vacia {
+.pista-mapa {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 24px;
+  padding: 13px clamp(16px, 2vw, 22px) 14px;
+  border-top: 1px solid var(--linea);
+  background: rgba(251, 249, 244, 0.86);
 }
 
-.ficha-vacia .ficha-texto { font-size: 13px; }
+.pista-eyebrow {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
 
-.ficha-tecla {
+.pista-texto {
+  margin: 3px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--tinta-media);
+}
+
+.pista-tecla {
   flex: 0 0 auto;
   padding: 6px 10px;
   border: 1px solid var(--linea-suave);
@@ -765,6 +801,8 @@ button { font-family: inherit; }
   white-space: nowrap;
 }
 
+.solo-tactil { display: none; }
+
 .ficha-eyebrow {
   margin: 0 0 4px;
   font-size: 10.5px;
@@ -773,33 +811,6 @@ button { font-family: inherit; }
   text-transform: uppercase;
   color: var(--tinta-suave);
 }
-
-.ficha-texto {
-  margin: 0;
-  max-width: 620px;
-  font-size: 14px;
-  color: var(--tinta-media);
-}
-
-.ficha-ayudas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ficha-ayudas li {
-  padding: 7px 11px;
-  border: 1px solid var(--linea-suave);
-  border-radius: 999px;
-  background: #fff;
-  font-size: 11.5px;
-  color: var(--tinta-media);
-}
-
-.ficha-ayudas strong { color: var(--tinta); }
 
 .ficha-datos {
   display: grid;
@@ -1122,6 +1133,10 @@ button { font-family: inherit; }
   .control { width: 36px; height: 36px; border-radius: 11px; }
 
   .mapa { height: 68vh; min-height: 400px; }
+
+  .pista-mapa { gap: 10px; padding: 11px 12px 12px; }
+  .pista-texto { font-size: 12px; }
+  .pista-tecla { display: none; }
 
   .inset { left: 12px; bottom: 12px; width: 186px; padding: 9px; }
   .inset-islas { gap: 6px; }
