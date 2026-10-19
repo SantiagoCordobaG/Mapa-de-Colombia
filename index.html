@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas de Colombia · Mapa interactivo de departamentos</title>
+  <meta name="description" content="Mapa interactivo de los 32 departamentos de Colombia y Bogotá, Distrito Capital: regiones, capitales, población, superficie y búsqueda.">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <div class="pagina">
+
+    <header class="cabecera">
+      <div class="marca">
+        <span class="bandera" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="marca-texto">
+          <p class="sobretitulo">Atlas interactivo</p>
+          <p class="titulo">Colombia <em>en detalle</em></p>
+        </div>
+      </div>
+
+      <form class="buscador" id="formulario-busqueda" role="search" autocomplete="off" onsubmit="return false;">
+        <label class="sr-solo" for="buscador">Buscar departamento o capital</label>
+        <svg class="icono-lupa" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+        </svg>
+        <input
+          id="buscador"
+          type="text"
+          placeholder="Buscar departamento o capital…"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="resultados"
+          aria-autocomplete="list"
+          spellcheck="false"
+        >
+        <button type="button" class="limpiar" id="limpiar-busqueda" aria-label="Limpiar búsqueda" hidden>×</button>
+        <ul class="resultados" id="resultados" role="listbox" aria-label="Resultados de la búsqueda" hidden></ul>
+      </form>
+
+      <div class="acciones-cabecera">
+        <button type="button" class="boton-secundario" id="btn-csv">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"></path></svg>
+          <span>Descargar CSV</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="panel">
+
+      <section class="escenario" aria-label="Mapa interactivo de Colombia">
+        <div class="mapa" id="mapa">
+          <svg id="lienzo" viewBox="0 0 1000 1200" preserveAspectRatio="xMidYMid meet" role="img"
+               aria-label="Mapa político de Colombia con sus departamentos. Usa las flechas del teclado o la búsqueda para explorar.">
+            <g id="capa-mapa">
+              <g id="capa-departamentos"></g>
+              <g id="capa-resaltado"></g>
+              <g id="capa-guias"></g>
+              <g id="capa-etiquetas"></g>
+              <g id="capa-capitales"></g>
+              <g id="capa-contexto"></g>
+            </g>
+          </svg>
+
+          <div class="pildoras" aria-hidden="true">
+            <span class="pildora"><strong id="pildora-entidades">33</strong> entidades</span>
+            <span class="pildora"><strong id="pildora-poblacion">51,6 M</strong> habitantes</span>
+            <span class="pildora"><strong id="pildora-superficie">1.141.748</strong> km²</span>
+          </div>
+
+          <div class="controles" role="group" aria-label="Controles del mapa">
+            <button type="button" class="control" id="zoom-mas" aria-label="Acercar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            </button>
+            <button type="button" class="control" id="zoom-menos" aria-label="Alejar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path></svg>
+            </button>
+            <button type="button" class="control" id="zoom-reset" aria-label="Ver todo el mapa">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"></path></svg>
+            </button>
+          </div>
+
+          <div class="inset" id="inset" role="button" tabindex="0" aria-label="Seleccionar el archipiélago de San Andrés y Providencia">
+            <div class="inset-cabecera">
+              <h2>Insular</h2>
+              <span>Caribe</span>
+            </div>
+            <div class="inset-islas">
+              <figure class="inset-isla">
+                <svg id="isla-san-andres" viewBox="0 0 150 104" aria-hidden="true"><path></path></svg>
+                <figcaption>San Andrés</figcaption>
+              </figure>
+              <figure class="inset-isla">
+                <svg id="isla-providencia" viewBox="0 0 150 104" aria-hidden="true"><path></path></svg>
+                <figcaption>Providencia</figcaption>
+              </figure>
+            </div>
+            <p class="inset-nota">≈ 775 km de la costa continental</p>
+          </div>
+
+          <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+          <div class="ficha" id="ficha" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <aside class="lateral">
+        <section class="leyenda" aria-label="Filtrar por región natural">
+          <div class="lateral-titulo">
+            <h2>Regiones naturales</h2>
+            <button type="button" class="texto-boton" id="quitar-filtro" hidden>Quitar filtro</button>
+          </div>
+          <ul id="lista-regiones"></ul>
+        </section>
+
+        <section class="listado" aria-label="Listado de departamentos">
+          <div class="lateral-titulo">
+            <h2>Departamentos</h2>
+            <span class="conteo" id="conteo-lista">33</span>
+          </div>
+          <ol id="lista-departamentos"></ol>
+        </section>
+
+        <p class="creditos-mini">
+          Geometría: <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener">geoBoundaries</a> ·
+          OpenStreetMap (ODbL). Datos: DANE, estimación 2022.
+        </p>
+      </aside>
+
+    </main>
+  </div>
+
+  <noscript>
+    <p style="padding:2rem;font-family:sans-serif">Este mapa necesita JavaScript para funcionar. Puedes consultar los datos en <a href="js/datos.js">js/datos.js</a>.</p>
+  </noscript>
+
+  <script src="js/datos.js"></script>
+  <script src="js/mapa-colombia.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
